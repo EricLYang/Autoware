@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <created/>
+    <modified/>
+  </asset>
+
+  <library_effects>
+    <effect id="effect-1">
+      <profile_COMMON>
+        <newparam sid="surface-1">
+          <surface type="2D">
+            <init_from>img-1</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="sampler-1">
+          <sampler2D>
+            <source>surface-1</source>
+            <minfilter>LINEAR_MIPMAP_LINEAR</minfilter>
+            <magfilter>LINEAR</magfilter>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>1 1 1 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="sampler-1" texcoord="TEXCOORD-1"/>
+            </diffuse>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+
+  <library_materials>
+    <material id="material-1" name="MATERIAL-1">
+      <instance_effect url="#effect-1"/>
+    </material>
+  </library_materials>
+
+  <library_geometries>
+    <geometry id="rect" name="rect">
+      <mesh>
+        <source id="position">
+          <float_array id="pos-array" count="12">
+             0 0 0
+             1 0 0
+             1 1 0
+             0 1 0
+          </float_array>
+          <technique_common>
+            <accessor source="#pos-array" count="4" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+
+        <source id="normal">
+          <float_array id="nml-array" count="3">
+             0 0 1
+          </float_array>
+          <technique_common>
+            <accessor source="#nml-array" count="1" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+
+	<source id="map">
+          <float_array id="map-array" count="8">
+            0 0  1 0  1 1  0 1
+          </float_array>
+          <technique_common>
+            <accessor source="#map-array" count="4" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+	</source>
+
+        <vertices id="verts">
+          <input semantic="POSITION" source="#position"/>
+        </vertices>
+
+        <polygons count="1" material="POLY-1">
+          <input semantic="VERTEX" source="#verts" offset="0"/>
+          <input semantic="NORMAL" source="#normal" offset="1"/>
+          <input semantic="TEXCOORD" source="#map" offset="2"/>
+          <p> 0 0 0  1 0 1  2 0 2  3 0 3 </p>
+        </polygons>
+      </mesh>
+    </geometry>
+  </library_geometries>
+
+  <library_images>
+    <image id="img-1" name="img-1">
+      <init_from>{}</init_from>
+    </image>
+  </library_images>
+
+  <library_visual_scenes>
+    <visual_scene id="vis_scene">
+      <node>
+        <translate> {} {} {} </translate>
+        <scale> {} {} 1 </scale>
+        <instance_geometry url="#rect">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="POLY-1" target="#material-1">
+                <bind_vertex_input semantic="TEXCOORD-1" input_semantic="TEXCOORD"/>
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+
+  <scene>
+    <instance_visual_scene url="#vis_scene"/>
+  </scene>
+</COLLADA>
